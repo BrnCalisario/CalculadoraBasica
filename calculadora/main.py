@@ -101,12 +101,17 @@ class Application:
             if actualName == "=":
                 self.buttonList[i].configure(command=self.calculate)
             elif actualName == "C":
+                self.buttonList[i].configure(command=self.clearInput)
+            elif actualName == "CC":
                 self.buttonList[i].configure(command=self.clearBoth)
             elif actualName == ".":
                 self.buttonList[i].configure(command=lambda actualValue=".": self.insertValue(actualValue))
 
-            self.buttonList[i].grid(row=buttonDict[indexDict]['row'], column=buttonDict[indexDict]['column'], padx=1,
-                                    pady=8)
+            self.buttonList[i].grid(
+                row=buttonDict[indexDict]['row'], 
+                column=buttonDict[indexDict]['column'], 
+                padx=1,
+                pady=8)
 
         # Botões + / - / x / ÷
         self.arithmeticButtons()
