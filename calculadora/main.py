@@ -2,21 +2,25 @@ from tkinter import *
 from tkinter import messagebox
 from buttonDict import buttonDict
 from operations import *
+from colorpallet import *
 
-
-class Application:
+class Application(Tk):
 
     def __init__(self, master=None):
+        super().__init__()
+        
+        # Definição de tema e cores da calculadora
+        self.actualTheme = "blackTheme"
+        self.corFundo = themes[self.actualTheme]["corBackground"]
+        self.corFonte = themes[self.actualTheme]["corFonte"]
+        self.corFundoInput = themes[self.actualTheme]["corInput"]
+        self.corFundoBotao = themes[self.actualTheme]["corInput"]
+        self.corBotaoContraste = themes[self.actualTheme]["corContraste"]
+        self.configure(bg=self.corFundo)
 
-        # Cores
-        self.corFundo = "#141E27"
-        self.corFonte = "#EEEDDE"
-        self.corFundoInput = "#203239"
-        self.corFundoBotao = "#203239"
-        self.corBotaoContraste = "#3d4d54"
-        #"#3d4d54"
-        #"#a9bcc4"
-        #"#768b94"
+        # Tamanho, posição e nome da janela
+        self.geometry("280x380+1000+300")
+        self.title('Calculadora')
 
         # Listas
         self.buttonList = []
@@ -37,7 +41,7 @@ class Application:
 
         # Caixa Input de Dados
         self.containerInput = Frame(master)
-        self.containerInput.pack()
+        self.containerInput.pack(pady= 5)
         self.actualValue = ""
         self.inputBox = Entry(self.containerInput, font=("Bahnschrift Light", "15"), state=DISABLED,disabledbackground= self.corFundoInput, disabledforeground= self.corFonte)
         self.inputBox.pack()
@@ -52,29 +56,7 @@ class Application:
         self.containerBtn.pack()
         self.createButtons()
 
-    # Insere valor
-    def insertValue(self, value):
-        if any(simbolo in self.inputBox.get() for simbolo in self.simbolos):
-            self.clearInput()
-        if self.inputBox.get() == "0":
-            self.clearInput()
-        self.inputBox['state'] = NORMAL
-        self.inputBox.insert(END, value)
-        self.inputBox['state'] = DISABLED
-
-    def clearInput(self):
-        self.inputBox['state'] = NORMAL
-        self.inputBox.delete(0, END)
-        self.inputBox['state'] = DISABLED
-
-    def clearMemory(self):
-        self.calculatorMemory = []
-
-    def clearBoth(self):
-        self.clearInput()
-        self.clearMemory()
-
-    # Criando botões a partir do dict importado do buttons.py
+    # ------------------ Adicionando botões de forma prática atraves da lista no arquivo buttonDict.py
     def createButtons(self):
         for i in range(len(buttonDict)):
             indexDict = 1 + i
@@ -116,6 +98,8 @@ class Application:
         # Botões + / - / x / ÷
         self.arithmeticButtons()
 
+    # --------------------- Adicionando a função dos botões aritiméticos
+
     def arithmeticButtons(self):
         symbolIndex = [3, 7, 11, 15]
 
@@ -136,6 +120,9 @@ class Application:
                 print(self.calculatorMemory)
                 self.clearInput()
                 self.insertValue(symbol)
+
+
+    # ----------------------- Lógica da Calculadora
 
     def calculate(self):
         try:
@@ -176,7 +163,7 @@ class Application:
         valA, valB, symIndex, symbol = valTuple
 
         if valB == 0 and symbol == "÷":
-            messagebox.showerror("BURRO", "Dividiu valor por 0")
+            messagebox.showerror("Erro", "Dividiu valor por 0")
             self.clearBoth()
             return
 
@@ -193,9 +180,32 @@ class Application:
         valTuple = (valA, valB, symIndex, symbol)
         return valTuple
 
+    # --------------------- Funções de Inserção e Memória -----------------------------
+     
+    def insertValue(self, value):
+        if any(simbolo in self.inputBox.get() for simbolo in self.simbolos):
+            self.clearInput()
+        if self.inputBox.get() == "0":
+            self.clearInput()
+        if value == "." and len(self.inputBox.get()) == 0:
+            return 
+        self.inputBox['state'] = NORMAL
+        self.inputBox.insert(END, value)
+        self.inputBox['state'] = DISABLED
 
-root = Tk(className=' Calculadora')
-root.geometry("280x360+1000+300")
-root.configure(background= "#141E27")
-Application(root)
-root.mainloop()
+    def clearInput(self):
+        self.inputBox['state'] = NORMAL
+        self.inputBox.delete(0, END)
+        self.inputBox['state'] = DISABLED
+
+    def clearMemory(self):
+        self.calculatorMemory = []
+
+    def clearBoth(self):
+        self.clearInput()
+        self.clearMemory()
+
+
+if __name__ == "__main__":
+    app = Application()
+    app.mainloop()
