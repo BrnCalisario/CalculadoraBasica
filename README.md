@@ -9,7 +9,7 @@ Calculadora com funções básicas aritméticas desenvolvida com simples propós
 ![Exemplo 1](https://github.com/BrnCalisario/CalculadoraBasica/blob/main/calculadora/img/appExample.png)
 
 - Operações Básicas ✔
-- Opções de Temas de cor 🚧
+- Opções de Temas de Cor 🚧
 - Funções de Porcentagem, Potência, Raiz 🚧
 
 # Tecnologias Utilizadas
