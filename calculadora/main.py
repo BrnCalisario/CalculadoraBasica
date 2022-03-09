@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import messagebox
+from turtle import right
 from buttonDict import buttonDict
 from operations import *
 from colorpallet import *
@@ -43,7 +44,14 @@ class Application(Tk):
         self.containerInput = Frame(master)
         self.containerInput.pack(pady= 5)
         self.actualValue = ""
-        self.inputBox = Entry(self.containerInput, font=("Bahnschrift Light", "15"), state=DISABLED,disabledbackground= self.corFundoInput, disabledforeground= self.corFonte)
+        self.inputBox = Entry(self.containerInput, 
+                        font=("Bahnschrift Light", "15"), 
+                        state=DISABLED,
+                        disabledbackground= self.corFundoInput, 
+                        disabledforeground= self.corFonte,
+                        justify='right',
+                        width=18)
+
         self.inputBox.pack()
 
         # Definindo tamanho padrão dos botões
@@ -81,32 +89,25 @@ class Application(Tk):
                 pass
 
             if actualName == "=":
-                self.buttonList[i].configure(command=self.calculate)
+                self.buttonList[i].configure(command=self.calculate, bg= "#ff7f27", activebackground= '#8e4a1b')
             elif actualName == "C":
                 self.buttonList[i].configure(command=self.clearInput)
             elif actualName == "CC":
                 self.buttonList[i].configure(command=self.clearBoth)
             elif actualName == ".":
                 self.buttonList[i].configure(command=lambda actualValue=".": self.insertValue(actualValue))
-
+            elif actualName in self.simbolos:
+                self.buttonList[i].configure(command=lambda simbolo=actualName: self.addOperator(simbolo),
+                bg=  "#37605a", activebackground= '#274541')
+    
             self.buttonList[i].grid(
                 row=buttonDict[indexDict]['row'], 
                 column=buttonDict[indexDict]['column'], 
                 padx=1,
                 pady=8)
 
-        # Botões + / - / x / ÷
-        self.arithmeticButtons()
 
     # --------------------- Adicionando a função dos botões aritiméticos
-
-    def arithmeticButtons(self):
-        symbolIndex = [3, 7, 11, 15]
-
-        for symbol in symbolIndex:
-            self.buttonList[symbol].configure(
-                command=lambda simbolo=self.buttonList[symbol]['text']: self.addOperator(simbolo))
-
     def addOperator(self, symbol):
         if len(self.inputBox.get()) > 0:
             if self.inputBox.get() in self.simbolos:
@@ -123,7 +124,6 @@ class Application(Tk):
 
 
     # ----------------------- Lógica da Calculadora
-
     def calculate(self):
         try:
             self.calculatorMemory.append(float(self.inputBox.get()))
@@ -181,7 +181,6 @@ class Application(Tk):
         return valTuple
 
     # --------------------- Funções de Inserção e Memória -----------------------------
-     
     def insertValue(self, value):
         if any(simbolo in self.inputBox.get() for simbolo in self.simbolos):
             self.clearInput()
