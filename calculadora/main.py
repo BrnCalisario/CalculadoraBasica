@@ -1,3 +1,5 @@
+import os
+import sys
 from tkinter import *
 from tkinter import messagebox
 from turtle import right
@@ -5,19 +7,16 @@ from buttonDict import buttonDict
 from operations import *
 from colorpallet import *
 
+
 class Application(Tk):
 
     def __init__(self, master=None):
         super().__init__()
         
         # Definição de tema e cores da calculadora
-        self.actualTheme = "blackTheme"
-        self.corFundo = themes[self.actualTheme]["corBackground"]
-        self.corFonte = themes[self.actualTheme]["corFonte"]
-        self.corFundoInput = themes[self.actualTheme]["corInput"]
-        self.corFundoBotao = themes[self.actualTheme]["corInput"]
-        self.corBotaoContraste = themes[self.actualTheme]["corContraste"]
-        self.configure(bg=self.corFundo)
+        self.actualTheme = ""
+        self.setTheme()
+        self.changeWidgetColor()
 
         # Tamanho, posição e nome da janela
         self.geometry("280x380+1000+300")
@@ -89,7 +88,7 @@ class Application(Tk):
                 pass
 
             if actualName == "=":
-                self.buttonList[i].configure(command=self.calculate, bg= "#ff7f27", activebackground= '#8e4a1b')
+                self.buttonList[i].configure(command=self.calculate, bg= self.corBotaoEqual, activebackground= self.corBotaoEqualC)
             elif actualName == "C":
                 self.buttonList[i].configure(command=self.clearInput)
             elif actualName == "CC":
@@ -98,7 +97,11 @@ class Application(Tk):
                 self.buttonList[i].configure(command=lambda actualValue=".": self.insertValue(actualValue))
             elif actualName in self.simbolos:
                 self.buttonList[i].configure(command=lambda simbolo=actualName: self.addOperator(simbolo),
-                bg=  "#37605a", activebackground= '#274541')
+                bg=  self.corBotaoSimbolo, activebackground= self.corBotaoSimboloC)
+            elif actualName == ":)":
+                self.buttonList[i].configure(command=lambda theme='blackTheme': self.changeTheme(theme))
+            elif actualName == ":D":
+                self.buttonList[i].configure(command=lambda theme='whiteTheme': self.changeTheme(theme))
     
             self.buttonList[i].grid(
                 row=buttonDict[indexDict]['row'], 
@@ -205,6 +208,46 @@ class Application(Tk):
         self.clearMemory()
 
 
+    def changeWidgetColor(self):
+        self.corFundo = themes[self.actualTheme]["corBackground"]
+        self.corFonte = themes[self.actualTheme]["corFonte"]
+        self.corFundoInput = themes[self.actualTheme]["corInput"]
+        self.corFundoBotao = themes[self.actualTheme]["corInput"]
+        self.corBotaoContraste = themes[self.actualTheme]["corContraste"]
+        self.corBotaoSimbolo = themes[self.actualTheme]["corBotaoSimbolo"]
+        self.corBotaoSimboloC = themes[self.actualTheme]["corBotaoSimboloC"]
+        self.corBotaoEqual = themes[self.actualTheme]["corBotaoEqual"]
+        self.corBotaoEqualC = themes[self.actualTheme]["corBotaoEqualC"]
+        self.configure(bg=self.corFundo)
+
+    def setTheme(self):
+        with open('calculadora/theme-select.txt', 'r+') as f:
+            theme = f.readline()
+            if len(theme) == 0 or not theme in themes:
+                f.write('blackTheme')
+                self.actualTheme = 'blackTheme'
+            else:
+                self.actualTheme = theme
+
+    def changeTheme(self, theme):
+        if not theme == self.actualTheme:
+            with open('calculadora/theme-select.txt', 'w') as f:
+                f.write(theme)
+            self.setTheme()
+            self.restart_program()
+        
+    
+    def restart_program(self):
+        python = sys.executable
+        os.execl(python, python, * sys.argv)
+        
+
+        
+
+
+
+
 if __name__ == "__main__":
     app = Application()
+    app.lift()
     app.mainloop()
