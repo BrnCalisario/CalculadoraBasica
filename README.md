@@ -6,10 +6,15 @@
 Calculadora com funções básicas aritméticas desenvolvida com simples propósito de autoavaliação referente as minhas habilidades atuais de programação.
 
 # Estado Atual
-![Exemplo 1](https://github.com/BrnCalisario/CalculadoraBasica/blob/main/calculadora/img/appExample.png)
+## Tema Escuro
+![Exemplo Tema Escuro]()
+
+## Tema Claro
+![Exemplo Tema Claro]()
+
 
 - Operações Básicas ✔
-- Opções de Temas de Cor 🚧
+- Opções de Temas de Cor ✔
 - Funções de Porcentagem, Potência, Raiz 🚧
 
 # Tecnologias Utilizadas

@@ -98,11 +98,9 @@ class Application(Tk):
             elif actualName in self.simbolos:
                 self.buttonList[i].configure(command=lambda simbolo=actualName: self.addOperator(simbolo),
                 bg=  self.corBotaoSimbolo, activebackground= self.corBotaoSimboloC)
-            elif actualName == ":)":
-                self.buttonList[i].configure(command=lambda theme='blackTheme': self.changeTheme(theme))
-            elif actualName == ":D":
-                self.buttonList[i].configure(command=lambda theme='whiteTheme': self.changeTheme(theme))
-    
+            elif actualName == "🖤":
+                self.buttonList[i].configure(command=self.alterTheme)
+
             self.buttonList[i].grid(
                 row=buttonDict[indexDict]['row'], 
                 column=buttonDict[indexDict]['column'], 
@@ -189,8 +187,13 @@ class Application(Tk):
             self.clearInput()
         if self.inputBox.get() == "0":
             self.clearInput()
-        if value == "." and len(self.inputBox.get()) == 0:
-            return 
+        if value == ".":
+            inputValue = self.inputBox.get()
+            if len(self.inputBox.get()) == 0:
+                return
+            elif inputValue.find(".") != -1:
+                return
+
         self.inputBox['state'] = NORMAL
         self.inputBox.insert(END, value)
         self.inputBox['state'] = DISABLED
@@ -235,16 +238,18 @@ class Application(Tk):
                 f.write(theme)
             self.setTheme()
             self.restart_program()
+
+    def alterTheme(self):
+        if self.actualTheme == 'blackTheme':
+            self.changeTheme('whiteTheme')
+        else:
+            self.changeTheme('blackTheme')
         
-    
+
     def restart_program(self):
         python = sys.executable
         os.execl(python, python, * sys.argv)
         
-
-        
-
-
 
 
 if __name__ == "__main__":
