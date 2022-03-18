@@ -7,10 +7,10 @@ Calculadora com funções básicas aritméticas desenvolvida com simples propós
 
 # Estado Atual
 ## Tema Escuro
-![Exemplo Tema Escuro]()
+![Exemplo Tema Escuro](https://github.com/BrnCalisario/calculadora-basica/blob/main/calculadora/img/tema-escuro.png)
 
 ## Tema Claro
-![Exemplo Tema Claro]()
+![Exemplo Tema Claro](https://github.com/BrnCalisario/calculadora-basica/blob/main/calculadora/img/tema-claro.png)
 
 
 - Operações Básicas ✔
