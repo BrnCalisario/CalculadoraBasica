@@ -2,7 +2,6 @@ import os
 import sys
 from tkinter import *
 from tkinter import messagebox
-from turtle import right
 from buttonDict import buttonDict
 from operations import *
 from colorpallet import *
